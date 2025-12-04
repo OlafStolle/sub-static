@@ -9,18 +9,18 @@
 
 		#was
 {
-    
-   
+
+
     text-align:center;
     border-radius:5px;
     background: rgba(255,255,0,0.7);
     position:absolute;
-    top:10px;
+    top:130px;
     left:calc(50% - 300px);
     margin:auto;
         z-index: 2000;
     display: inline-block;
-    
+
 }
 
 .input.maps input {
@@ -72,22 +72,33 @@
 
 .ad-slider-container {
     display: flex;
-    transition: transform 0.5s ease;
     height: 100%;
+    animation: slide 30s linear infinite;
+}
+
+@keyframes slide {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
 }
 
 .ad-card {
-    min-width: 100%;
+    min-width: 400px;
+    flex-shrink: 0;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: row;
     gap: 15px;
-    padding: 10px;
+    padding: 10px 20px;
     cursor: pointer;
     color: #fff;
     transition: background-color 0.3s;
+    border-right: 1px solid #333;
 }
 
 .ad-card:hover {
@@ -111,29 +122,6 @@
     font-size: 14px;
 }
 
-.ad-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(255, 255, 255, 0.2);
-    color: #fff;
-    border: none;
-    font-size: 24px;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    border-radius: 50%;
-    transition: background-color 0.3s;
-}
-
-.ad-nav:hover {
-    background-color: rgba(255, 255, 255, 0.4);
-}
-
-.ad-prev {
-    left: 10px;
-}
-
-.ad-next {
-    right: 10px;
+.ad-slider-container:hover {
+    animation-play-state: paused;
 }
