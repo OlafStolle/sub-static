@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Mobile</title>
+	<link rel="stylesheet" href="leaflet.css" />
+	<script src="leaflet.js"></script> 
+
+	<style>
+		body {
+		    padding: 0;
+		    margin: 0;
+		}
+		html, body, #map {
+		    height: 100%;
+		    width: 100%;
+		}
+	</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+</head>
+
+<body>
+<!--
+In Chrome: 
+Strg-Shift-I
+ESC
+Emulations->Sensors
+
+Extension: Change GeoLocation
+-->
+<div id="map"></div>
+
+<script type="text/javascript">
+var map = L.map('map').setView([48.12, 11.54], 2);
+
+L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+
+map.locate({setView: true, maxZoom: 16});
+map.on('locationfound', onLocationFound);
+map.on('locationerror', onLocationError);
+
+
+function onLocationFound(e) {
+    var radius = Math.round(e.accuracy / 2);
+
+    L.marker(e.latlng).addTo(map)
+        .bindPopup("Sie sind im Umkreis von " + radius + " Metern um diesen Punkt").openPopup();
+
+    L.circle(e.latlng, radius).addTo(map);
+}
+
+function onLocationError(e) {
+    alert(e.message);
+}
+
+
+
+
+</script>
+</body>
+</html>

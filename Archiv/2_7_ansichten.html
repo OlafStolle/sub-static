@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Ansichten</title>
+	<link rel="stylesheet" href="leaflet.css" />
+	<script src="leaflet.js"></script> 
+	<style>
+     body {
+            padding: 0;
+            margin: 0;
+        }
+        html, body, #map {
+            height: 100%;
+            width: 100%;
+        }
+	</style>
+</head>
+
+<body>
+<div id="map"></div>
+
+
+<script type="text/javascript">
+var map = L.map('map', {
+    center: [48.12, 11.54],
+    zoom: 4
+});
+
+
+var normal = L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+var schule = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+	maxZoom: 16,
+	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="https://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+});
+
+var aussehen = {
+    "Normalansicht": normal,
+    "Wie in der Schule": schule
+};
+
+
+var graz 	  = L.marker([47.061, 15.43991]).bindPopup('Graz'),
+    muenchen  = L.marker([48.12,11.54]).bindPopup('München'),
+    zuerich   = L.marker([47.36952, 8.54187]).bindPopup('Zürich');
+var staedte = L.layerGroup([graz,muenchen,zuerich]);
+
+var niederlassungen = {
+    "Unsere Niederlassungen": staedte
+};
+
+L.control.layers(aussehen,niederlassungen).addTo(map);
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+.feature-label {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 2px;
+    text-align: center;
+    font-size: 12px;
+    white-space: nowrap;
+    Damit der Text nicht umbricht
+}
+
+#map {
+    height: 100vh; /* Vollbildhöhe */
+    width: 67vw; /* 67% der Bildschirmbreite */
+    float: right;
+}
+
+.legend {
+    height: 100vh; /* Vollbildhöhe */
+    width: 33vw; /* 33% der Bildschirmbreite */
+    overflow-y: auto;
+    font-size: 0.9em;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+}
+
+    .legend .item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+
+    .legend button.color-btn {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        border: none;
+        margin-right: 10px;
+    }
+    
+    .lasso-button-container {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    
+    .lasso-button-container button {
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    
+    .lasso-button-container button.active {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .legend span {
+        flex-grow: 1;
+    }
+
+.color-picker-container {
+    display: none;
+}
+
+.legend .gewerk-container {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.filter-divider {
+    margin: 15px 0;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+#infoCanvas {
+    background: white;
+    min-height: 100px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+#einzelansicht-btn {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    transition: all 0.15s ease-in-out;
+}
+
+#einzelansicht-btn:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+.select2-selection__choice {
+    background-color: blue
+}
+
+/* Styling für die Steuerelemente */
+.form-check.form-switch {
+    padding-left: 2.5em;
+}
+
+.form-check-input {
+    cursor: pointer;
+}
+
+#btnEinzelansicht {
+    min-width: 120px;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+#btnEinzelansicht:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+ 
+
+
+/* Cursor für Lasso-Auswahl */
+.leaflet-container.lasso-active {
+    cursor: crosshair !important;
+}
+
+/* Export-Panel für ausgewählte Elemente */
+.lasso-export-panel {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 250px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    padding: 10px;
+}
+
+.lasso-export-panel .export-header {
+    font-weight: bold;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.lasso-export-panel .export-count {
+    margin-bottom: 10px;
+}
+
+.lasso-export-panel button {
+    margin: 5px 0;
+    width: 100%;
+}
+
+/* Anpassungen für das Lasso-Button */
+#lasso-selection-btn {
+    transition: background-color 0.3s ease;
+}
+
+#lasso-selection-btn.active {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+.selected-marker {
+    background: transparent;
+    border: none;
+}
+
+.selected-marker div {
+    transition: all 0.3s ease;
+}

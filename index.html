@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>AHS Subregionen</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    <link rel="stylesheet" href="js/leaflet.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" /> 
+    <script src="js/leaflet.js" ></script>
+    <script src="js/leaflet-src.js"></script>
+    <script src="js/jquery.js"></script>
+
+ <!--   <script src="https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css" type="text/javascript"></script>
+       <script src="https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js"></script>-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw-src.css" integrity="sha512-vJfMKRRm4c4UupyPwGUZI8U651mSzbmmPgR3sdE3LcwBPsdGeARvUM5EcSTg34DK8YIRiIo+oJwNfZPMKEQyug==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js" integrity="sha512-ozq8xQKq6urvuU6jNgkfqAmT7jKN2XumbrX1JiB3TnF7tI48DPI4Gy1GXKD/V3EExgAs1V+pRO7vwtS1LHg0Gw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
+
+    <link rel="stylesheet" href="js/styles.css" />
+      
+ 
+    <link href="js/geocoder/Control.Geocoder.css" rel="stylesheet"  type="text/css"/>
+    <script src="js/geocoder/Control.Geocoder.js" type="text/javascript"></script>
+    <noscript>
+        <hr />
+        Hallo diese Seite funktioniert nur richtig mit eingeschaltetem Scripting
+        <br />
+        eine Erklärung dazu finden Sie hier
+        <br />
+        <a href="https://www.enable-javascript.com/de/">https://www.enable-javascript.com/de/</a>
+        <br />
+        <br />
+        <br />
+        wenn Sie sich dagegen entscheiden, k�nnen Sie sich diese Karte herunterladen
+        <br />
+        <br />
+        <a href="doc/DEuAHS2013.jpg">JPG Karte </a>
+
+        <hr />
+
+    </noscript>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M3DE94JG48"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-M3DE94JG48');
+</script>
+
+
+</head>
+
+<body>
+
+    <div id="was" style="z-index: 1">
+	
+  
+    <div class="left-inner-addon">
+        <i class="fa fa-map-marker" style="left:calc(40% - 250px);"></i>
+        <input  id="places" type="text"
+                class="form-control" 
+                placeholder="SubRegion suche" />
+        <button type="button" class="btn btn-primary"   onclick="getToMAil()" >Daten versenden </button>
+         
+    </div>
+</div>
+
+    <div id="map" style="z-index: 0"></div>
+    <script type="text/javascript" src="scripts/myaApp.js"></script>
+
+
+
+
+
+</body>
+</html>

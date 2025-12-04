@@ -1,0 +1,75 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Grenzen</title>
+	<link rel="stylesheet" href="https://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+	<script src="https://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+	<script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
+	<style>
+	body {
+		    padding: 0;
+		    margin: 0;
+		}
+		html, body, #map {
+		    height: 100%;
+		    width: 100%;
+		}
+	</style>
+</head>
+
+<body>
+<div id="map"></div>
+
+
+<!-- 
+Ländergrenzen. Suche nach geojson oder "shapefile"
+	https://data.opendataportal.at
+	https://opendatalab.de
+	https://opendata.admin.ch
+	https://download.geofabrik.de
+	https://github.com/johan/world.geo.json
+-->
+
+<script type="text/javascript">
+if( location.protocol == 'file:' )
+	alert('Der AJAX-Aufruf in Zeile 48 funktioniert nur, wenn die Datei über einen Server (also via http) aufgerufen wird.');
+
+var map = L.map('map').setView([48.12, 12.54], 3);
+
+
+var geoJSON = new L.geoJson(false,{
+	onEachFeature: onEachFeature,	
+	style: function(feature) {
+           return {weight: 1, color: "#990000"};
+    }
+});
+geoJSON.addTo(map);
+
+$.ajax({
+	dataType: "json",
+	url: "geojson/europa.json",
+	success: function(data) {
+	    $(data.features).each(function(key, data) {
+	        geoJSON.addData(data);
+	    });
+	}
+}).error(function() {});
+
+
+function onEachFeature(feature, layer) {
+    if (feature.properties && feature.properties.name) {
+        layer.bindPopup(feature.properties.name);
+    }
+}
+
+
+
+L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+
+
+</script>
+</body>
+</html>

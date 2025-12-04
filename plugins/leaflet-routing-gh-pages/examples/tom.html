@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Load Leaflet Route</title>
+  <link rel="stylesheet" href="https://cdn.leafletjs.com/leaflet-0.7/leaflet.css" />
+
+</head>
+<body>
+  <div id="map" style="width:600px;height:500px"></div>
+  <div id="button">Route als Polygon</div>
+
+  <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="https://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
+  <script src="../src/utils/LineUtil.Snapping.js"></script>
+  <script src="../src/utils/Marker.Snapping.js"></script>
+  <script src="../src/L.Routing.js"></script>
+  <script src="../src/L.Routing.Storage.js"></script>
+  <script src="../src/L.Routing.Draw.js"></script>
+  <script src="../src/L.Routing.Edit.js"></script>
+  <script src="https://tyrasd.github.io/osmtogeojson/osmtogeojson.js"></script>
+  <script type="text/javascript">
+    
+
+ 
+    var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: 'tiles &copy; <a target="_blank" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    });
+
+
+    map = new L.Map('map', {
+      layers: [osm] 
+      ,center: new L.LatLng(46,11)
+      ,zoom: 13
+    });
+
+    L.control.layers({
+        'OpenStreetMap': osm
+    }).addTo(map);
+
+    map.attributionControl.addAttribution('data &copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors');
+
+
+    // OSM Router
+    router = function(m1, m2, cb) {
+      var proxy = 'https://www2.turistforeningen.no/routing.php?url=';
+      var route = 'https://www.yournavigation.org/api/1.0/gosmore.php&format=geojson&v=foot&fast=1&layer=mapnik';
+      var params = '&flat=' + m1.lat + '&flon=' + m1.lng + '&tlat=' + m2.lat + '&tlon=' + m2.lng;
+      $.getJSON(proxy + route + params, function(geojson, status) {
+        if (!geojson || !geojson.coordinates || geojson.coordinates.length === 0) {
+          if (typeof console.log === 'function') {
+            console.log('OSM router failed', geojson);
+          }   
+          return cb(new Error());
+        }
+        return cb(null, L.GeoJSON.geometryToLayer(geojson));
+      });
+    }
+
+    routing = new L.Routing({
+      position: 'topleft'
+      ,routing: {
+        router: router
+      }
+          
+    });
+    map.addControl(routing);
+    routing.draw();
+
+    var polyline;
+   $('#button').click(function() {
+	  polyline = routing.toGeoJSON(false);
+	  for(i=0; i<polyline.coordinates.length; i++){
+	  	console.log("[" + polyline.coordinates[i][0] + "," + polyline.coordinates[i][0] + "]");
+	  }
+	});
+
+  </script>
+  
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+Layer ohne gültige Eigenschaften übersprungen: 
+TypeError {}
+Gefundener Punkt innerhalb: 53.83544029 13.69693376
+Layer ohne gültige Eigenschaften übersprungen: 
+TypeError {}
+Gefundener Punkt innerhalb: 54.10576237 12.27456418
+Layer ohne gültige Eigenschaften übersprungen: 
+TypeError {}
+Gefundener Punkt innerhalb: 54.29938517 13.05310199
+Layer ohne gültige Eigenschaften übersprungen: 
+TypeError {}
+Lasso-Auswahl abgeschlossen: 0 Elemente ausgewählt.
+Nicht genügend Punkte für eine Auswahl.
+Evaluiere Lasso-Auswahl
+Evaluiere mit Layer: 
+i {options: {…}, _layers: {…}, _initHooksCalled: true, _leaflet_id: 785, _mapToAdd: i, …}
+Lasso Polygon erstellt: 
+Object {type: "Feature", properties: {…}, geometry: {…}}
+Gefundener Punkt innerhalb: 54.43308665 13.4351414
+Layer ohne gültige Eigenschaften übersprungen: 
+TypeError {}
+message: "Cannot read properties of undefined (reading 'properties')"
+stack: "TypeError: Cannot read properties of undefined (reading 'properties')↵ at https://62331bd1-3442-4998-be8c-2faf2400c6b6-00-149ppext3058i.pike.replit.dev/scripts/leaflet/Layers/LassoSelection.js:251:66↵ at i.eachLayer (https://unpkg.com/leaflet@1.7.1/dist/leaflet.js:5:66633)↵ at evaluateLassoSelection (https://62331bd1-3442-4998-be8c-2faf2400c6b6-00-149ppext3058i.pike.replit.dev/scripts/leaflet/Layers/LassoSelection.js:239:42)↵ at i.finishLassoOnMouseUp (https://62331bd1-3442-4998-be8c-2faf2400c6b6-00-149ppext3058i.pike.replit.dev/scripts/leaflet/Layers/LassoSelection.js:165:17)↵ at i.fire (https://unpkg.com/leaflet@1.7.1/dist/leaflet.js:5:5014)↵ at i._fireDOMEvent (https://unpkg.com/leaflet@1.7.1/dist/leaflet.js:5:41637)↵ at i._handleDOMEvent (https://unpkg.com/leaflet@1.7.1/dist/leaflet.js:5:40917)↵ at HTMLDivElement.c (https://unpkg.com/leaflet@1.7.1/dist/leaflet.js:5:21764)"
+get stack: ƒ ()
+set stack: ƒ ()
+[[Prototype]]: Object
+Gefundener Punkt innerhalb: 54.41633086 13.59267907
+Layer ohne gültige Eigenschaften übersprungen: 
+TypeError {}
+Gefundener Punkt innerhalb: 54.55258018 13.54628984
+Layer ohne gültige Eigenschaften übersprungen: 
+TypeError {}
+Lasso-Auswahl abgeschlossen: 0 Elemente ausgewählt.

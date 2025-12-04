@@ -1,0 +1,5 @@
+https://mapshaper.org/
+Achtung auf geometry: null, wenn die Simplifizierung Polygone gänzlich löscht
+Achtung auf richtige Reihenfolge der Punkt: LonLat, nicht andersherum, für Europa: erst die kleine Zahl, dann die große
+Leaflet-Projektion: EPSG:3857, auch als "Google Mercator" bezeichnet
+Hilft https://github.com/kartena/Proj4Leaflet

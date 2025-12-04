@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Infokasten</title>
+	<link rel="stylesheet" href="leaflet.css" />
+	<script src="leaflet.js"></script>
+	<script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
+	<style>
+	body {
+		padding: 0;
+		margin: 0;
+	}
+	html, body, #map {
+		height: 100%;
+		width: 100%;
+	}
+	.info {
+	    line-height: 18px;
+	    color: #555;
+	    padding: 6px 8px;
+	    font: 14px/16px Arial, Helvetica, sans-serif;
+	    background: white;
+	    background: rgba(255,255,255,0.8);
+	    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+	    border-radius: 5px;
+	    min-width: 15em;
+	}
+	.legend i {
+	    width: 15px;
+	    height: 15px;
+	    float: left;
+	    margin-right: 8px;
+	    opacity: 0.7;
+	    border-radius:15px;
+	}
+	</style>
+</head>
+
+<body>
+<div id="map"></div>
+
+
+<script type="text/javascript">
+var map = L.map('map').setView([51.381380, 7.476959], 6);
+
+
+var bezirke = new L.geoJson(false,{
+	onEachFeature: onEachFeature,
+	style: function(feature) {
+        if (feature.properties.iso > 500)
+        	return {weight: 1, color: "#990000"};
+        else if (feature.properties.iso < 400)
+        	return {weight: 1, color: "#009900"};
+       	else
+           return {weight: 1, color: "#000099"};
+        }
+
+});
+bezirke.addTo(map);
+
+$.ajax({
+	dataType: "json",
+	url: "geojson/ahs_sub_smal.json",
+	success: function(data) {
+	    $(data.features).each(function(key, data) {
+	        bezirke.addData(data);
+	    });
+	}
+}).error(function() {});
+
+
+function onEachFeature(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+    });
+
+}
+function highlightFeature(e) {
+	var layer = e.target;
+    info.update(layer.feature.properties);
+}
+
+function resetHighlight(e) {
+    info.update();
+}
+
+
+L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+
+var info = L.control();
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+    this._div.innerHTML = '<h4>Subregion</h4>' +  (props ?
+        '<b>' + props.Description + '</b>'
+
+        : 'Fahren Sie mit der Maus über die Karte');
+};
+
+
+
+info.addTo(map);
+
+</script>
+</body>
+</html>

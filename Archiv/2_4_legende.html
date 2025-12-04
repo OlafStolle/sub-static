@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Legende</title>
+	<link rel="stylesheet" href="leaflet.css" />
+	<script src="leaflet.js"></script> 
+	<script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
+	<style>
+	   body {
+	        padding: 0;
+	        margin: 0;
+	    }
+	    html, body, #map {
+	        height: 100%;
+	        width: 100%;
+	    }
+	.legend {
+	    line-height: 18px;
+	    color: #555;
+	    padding: 6px 8px;
+	    font: 14px/16px Arial, Helvetica, sans-serif;
+	    background: white;
+	    background: rgba(255,255,255,0.8);
+	    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+	    border-radius: 5px;
+	}
+	.legend i {
+	    width: 15px;
+	    height: 15px;
+	    float: left;
+	    margin-right: 8px;
+	    opacity: 0.7;
+	    border-radius:15px;
+	}
+	</style>
+</head>
+
+<body>
+<div id="map"></div>
+
+
+<script type="text/javascript">
+if( location.protocol == 'file:' )
+	alert('Der AJAX-Aufruf in Zeile 62 funktioniert nur, wenn die Datei über einen Server (also via http) aufgerufen wird.');var map = L.map('map').setView([48.12, 12.54], 6);
+
+
+var bezirke = new L.geoJson(false,{
+	onEachFeature: onEachFeature,	
+	style: function(feature) {
+        if (feature.properties.iso > 500) 
+        	return {weight: 1, color: "#990000"};
+        else if (feature.properties.iso < 400)       	
+        	return {weight: 1, color: "#009900"};
+       	else
+           return {weight: 1, color: "#000099"};
+        }
+    
+});
+bezirke.addTo(map);
+
+$.ajax({
+	dataType: "json",
+	url: "geojson/a_bezirke.json",
+	success: function(data) {
+	    $(data.features).each(function(key, data) {
+	        bezirke.addData(data);
+	    });
+	}
+}).error(function() {});
+
+
+function onEachFeature(feature, layer) {
+    if (feature.properties && feature.properties.name) {
+        layer.bindPopup(feature.properties.name);
+    }
+}
+
+
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'legend');     
+    div.innerHTML  = '<i style="background:red"></i> 0 bis 9<br/>';
+    div.innerHTML += '<i style="background:green"></i> 10 bis 19<br/>';
+    div.innerHTML += '<i style="background:blue"></i> 20 bis 29';
+
+    return div;
+};
+
+legend.addTo(map);
+
+
+
+
+
+
+
+L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+
+</script>
+</body>
+</html>
