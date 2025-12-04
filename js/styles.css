@@ -4,7 +4,8 @@
 		}
 		#map {
 			width: 100%;
-			height: 100%;
+			height: calc(100% - 200px);
+			margin-top: 200px;
 		}
 
 		#was
@@ -38,8 +39,6 @@
   
 }
 
-	#map { width: 100%;
-			height: 100%; }
 .info { padding: 6px 8px; font: 14px/16px Arial, Helvetica, sans-serif; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } .info h4 { margin: 0 0 5px; color: #777; }
 .legend { text-align: left; line-height: 18px; color: #555; } .legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }
 
@@ -55,10 +54,91 @@
     position: relative;
 }
 .left-inner-addon input {
-    padding-left: 30px;    
+    padding-left: 30px;
 }
 .left-inner-addon i {
     position: absolute;
     padding: 10px 12px;
     pointer-events: none;
+}
+
+/* Werbe-Slider Styles */
+#ad-slider {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    background-color: #000;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.ad-slider-container {
+    display: flex;
+    transition: transform 0.5s ease;
+    height: 100%;
+}
+
+.ad-card {
+    min-width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 20px;
+    padding: 20px;
+    cursor: pointer;
+    color: #fff;
+    transition: background-color 0.3s;
+}
+
+.ad-card:hover {
+    background-color: #1a1a1a;
+}
+
+.ad-card img {
+    max-height: 150px;
+    border-radius: 8px;
+}
+
+.ad-card h3 {
+    color: #fff;
+    margin: 0 0 10px 0;
+    font-size: 24px;
+}
+
+.ad-card p {
+    color: #ccc;
+    margin: 0;
+    font-size: 16px;
+}
+
+.ad-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border: none;
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    z-index: 1001;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+
+.ad-nav:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.ad-prev {
+    left: 10px;
+}
+
+.ad-next {
+    right: 10px;
 }
