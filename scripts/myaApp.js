@@ -1,3 +1,45 @@
+/*
+ * ============================================================================
+ * AiCrafters Platform - Proprietary and Confidential
+ * ============================================================================
+ *
+ * Copyright (c) 2025 Olaf Stolle. All Rights Reserved.
+ *
+ * NOTICE: This file and its contents are proprietary and confidential.
+ *
+ * Unauthorized copying, modification, distribution, or use of this file,
+ * via any medium, is strictly prohibited without explicit written permission
+ * from the copyright holder.
+ *
+ * This software contains trade secrets and confidential information including
+ * but not limited to:
+ * - Proprietary algorithms and calculation methods
+ * - Geometric models and mathematical formulas
+ * - Database structures and data models
+ * - Business logic and workflows
+ * - AI models and training procedures
+ *
+ * PENALTIES FOR UNAUTHORIZED USE:
+ * - Unauthorized use: â‚¬50,000 + â‚¬5,000/day
+ * - Reverse engineering: â‚¬100,000
+ * - Distribution to third parties: â‚¬150,000
+ * - Use in competing products: â‚¬250,000
+ * - Commercial exploitation: â‚¬500,000 + 25% of revenue
+ *
+ * LEGAL NOTICE:
+ * Violations may result in:
+ * - Civil penalties as stated above
+ * - Criminal prosecution under Â§ 106 UrhG (German Copyright Act)
+ * - Immediate injunction
+ * - Confiscation of derived works
+ *
+ * For licensing inquiries, contact:
+ * Olaf Stolle
+ * info@aicrafters.io
+ *
+ * ============================================================================
+ */
+
 //© Copyright 2018 – Urheberrechtshinweis
 //Alle Inhalte dieses INTERNETANGEBOTES /  WERKES}, insbesondere Code Texte, Grafiken, Geometrien,
 //sind urheberrechtlich geschützt.Das Urheberrecht liegt, soweit nicht ausdrücklich anders gekennzeichnet, 

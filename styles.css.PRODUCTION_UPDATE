@@ -1,0 +1,161 @@
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+		#map {
+			width: 100%;
+			height: calc(100% - 120px - 70px);
+		}
+
+		#was
+{
+
+
+    text-align:center;
+    border-radius:5px;
+    background: rgba(255,255,0,0.7);
+    position:absolute;
+    top:130px;
+    left:calc(50% - 300px);
+    margin:auto;
+        z-index: 2000;
+    display: inline-block;
+
+}
+
+.input.maps input {
+    padding: 0 35px;
+}
+
+#places {
+    float: left;
+    
+    width: 500px;
+    border: 3px solid #d5eff6;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    background-color: #fff;
+  
+}
+
+.info { padding: 6px 8px; font: 14px/16px Arial, Helvetica, sans-serif; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } .info h4 { margin: 0 0 5px; color: #777; }
+.legend { text-align: left; line-height: 18px; color: #555; } .legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }
+
+.scroler{
+	
+	width: 250px;
+	height: 800px;
+	z-index: 999;
+	overflow-y: scroll;
+}
+
+.left-inner-addon {
+    position: relative;
+}
+.left-inner-addon input {
+    padding-left: 30px;
+}
+.left-inner-addon i {
+    position: absolute;
+    padding: 10px 12px;
+    pointer-events: none;
+}
+
+/* Werbe-Slider Styles */
+#ad-slider {
+    position: relative;
+    width: 100%;
+    height: 120px;
+    background-color: #000;
+    overflow: hidden;
+}
+
+.ad-slider-container {
+    display: flex;
+    height: 100%;
+    animation: slide 40s linear infinite;
+    will-change: transform;
+}
+
+@keyframes slide {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.ad-card {
+    min-width: 350px;
+    flex-shrink: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #fff;
+    transition: all 0.3s;
+    margin: 0 10px;
+}
+
+.ad-card-content {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    padding: 15px 20px;
+    border-radius: 12px;
+    text-align: center;
+    width: 100%;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid #333;
+}
+
+.ad-card:hover .ad-card-content {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 200, 255, 0.3);
+    border-color: #00c8ff;
+}
+
+.ad-card h3 {
+    color: #00c8ff;
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.ad-card p {
+    color: #ccc;
+    margin: 0 0 10px 0;
+    font-size: 13px;
+}
+
+.ad-price {
+    color: #fff;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.ad-price .setup {
+    color: #00ff88;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.ad-price .monthly {
+    color: #ffd700;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.ad-price .cta {
+    display: inline-block;
+    background: linear-gradient(90deg, #00c8ff 0%, #00ff88 100%);
+    color: #000;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.ad-slider-container:hover {
+    animation-play-state: paused;
+}

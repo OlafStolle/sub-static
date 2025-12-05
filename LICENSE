@@ -1,0 +1,159 @@
+PROPRIETARY SOFTWARE LICENSE AGREEMENT
+AiCrafters Platform - Alle Rechte vorbehalten
+
+Copyright (c) 2025 Olaf Stolle
+Alle Rechte vorbehalten.
+
+================================================================================
+WICHTIGER HINWEIS
+================================================================================
+
+Diese Software und alle zugehörigen Komponenten, einschließlich aber nicht
+beschränkt auf:
+- Quellcode
+- Datenbanken und Datenstrukturen
+- Algorithmen und Berechnungsmethoden
+- Geometrien, Formeln und mathematische Modelle
+- Benutzeroberflächen und Designs
+- Dokumentation und Anleitungen
+- KI-Modelle und Trainingsverfahren
+- API-Schnittstellen und Protokolle
+
+sind urheberrechtlich geschützt und Eigentum von Olaf Stolle.
+
+================================================================================
+LIZENZGEWÄHRUNG
+================================================================================
+
+Diese Software wird NICHT als Open Source bereitgestellt. Die Nutzung ist
+ausschließlich unter folgenden Bedingungen gestattet:
+
+1. AUTORISIERTE NUTZUNG
+   - Nur mit ausdrücklicher schriftlicher Genehmigung des Rechteinhabers
+   - Nur für den vertraglich vereinbarten Zweck
+   - Nur im vertraglich festgelegten Umfang
+
+2. VERBOTENE HANDLUNGEN
+   Ohne ausdrückliche schriftliche Genehmigung ist Folgendes VERBOTEN:
+
+   a) Vervielfältigung jeglicher Art
+   b) Dekompilierung, Reverse Engineering oder Disassemblierung
+   c) Entfernung oder Änderung von Copyright-Hinweisen
+   d) Weitergabe, Verkauf, Vermietung oder Lizenzierung an Dritte
+   e) Erstellung abgeleiteter Werke
+   f) Extraktion von Algorithmen, Geometrien oder Datenstrukturen
+   g) Verwendung für konkurrierende Produkte oder Dienstleistungen
+   h) Öffentliche Zugänglichmachung oder Verbreitung
+   i) Cloud-Hosting oder SaaS-Bereitstellung ohne Genehmigung
+
+================================================================================
+BESONDERE SCHUTZKLAUSELN
+================================================================================
+
+1. GEOMETRIEN UND BERECHNUNGSMODELLE
+   Alle in dieser Software implementierten Geometrien, Formeln,
+   Berechnungsmodelle und mathematischen Algorithmen sind geistiges Eigentum
+   und unterliegen besonderem Schutz. Die Extraktion, Nachbildung oder
+   Verwendung dieser Elemente in anderen Systemen ist strengstens untersagt.
+
+2. DATENBANKEN UND DATENSTRUKTUREN
+   Die Struktur, Organisation und Befüllung der Datenbanken sowie alle
+   Datenmodelle sind urheberrechtlich geschützt.
+
+3. KI-MODELLE UND ALGORITHMEN
+   Alle verwendeten KI-Modelle, Trainingsverfahren, Prompts und maschinelle
+   Lernalgorithmen sind proprietär und geschützt.
+
+================================================================================
+VERTRAGSSTRAFEN BEI VERSTÖSSEN
+================================================================================
+
+Bei Verstößen gegen diese Lizenzvereinbarung sind folgende Strafen fällig:
+
+1. UNLIZENZIERTE NUTZUNG
+   - Einmalige Vertragsstrafe: 50.000 EUR
+   - Zusätzlich: 5.000 EUR pro Tag der unautorisierten Nutzung
+
+2. REVERSE ENGINEERING / DEKOMPILIERUNG
+   - Einmalige Vertragsstrafe: 100.000 EUR
+   - Zusätzlich: Herausgabe aller gewonnenen Erkenntnisse
+
+3. WEITERGABE AN DRITTE / VERBREITUNG
+   - Einmalige Vertragsstrafe: 150.000 EUR
+   - Zusätzlich: Schadensersatz für entgangene Lizenzgebühren
+
+4. VERWENDUNG VON GEOMETRIEN/ALGORITHMEN IN KONKURRENZPRODUKTEN
+   - Einmalige Vertragsstrafe: 250.000 EUR
+   - Zusätzlich: Unterlassungsanspruch mit Zwangsgeld
+   - Zusätzlich: Gewinnabschöpfung aus Konkurrenzsoftware
+
+5. KOMMERZIELLE VERWERTUNG OHNE LIZENZ
+   - Einmalige Vertragsstrafe: 500.000 EUR
+   - Zusätzlich: 25% des erwirtschafteten Umsatzes
+   - Zusätzlich: Einstweilige Verfügung
+
+6. ENTFERNUNG VON COPYRIGHT-HINWEISEN
+   - Pro entferntem Hinweis: 10.000 EUR
+   - Zusätzlich: Wiederherstellung auf Kosten des Verletzers
+
+================================================================================
+RECHTLICHE DURCHSETZUNG
+================================================================================
+
+1. GERICHTSSTAND
+   Ausschließlicher Gerichtsstand ist Hagen, Deutschland.
+
+2. ANWENDBARES RECHT
+   Es gilt das Recht der Bundesrepublik Deutschland.
+
+3. BEWEISLAST
+   Bei Verdacht auf Lizenzverstoß trägt der Beschuldigte die Beweislast,
+   dass keine Verletzung vorliegt.
+
+4. SOFORTMASSNAHMEN
+   Der Rechteinhaber ist berechtigt, bei Verstößen ohne vorherige Mahnung
+   einstweilige Verfügungen zu erwirken und Strafanzeige zu erstatten.
+
+5. STRAFVERFOLGUNG
+   Verstöße können nach § 106 UrhG (Unerlaubte Verwertung urheberrechtlich
+   geschützter Werke) mit Freiheitsstrafe bis zu 3 Jahren oder Geldstrafe
+   belangt werden.
+
+================================================================================
+GEWÄHRLEISTUNGSAUSSCHLUSS
+================================================================================
+
+DIE SOFTWARE WIRD "WIE BESEHEN" BEREITGESTELLT, OHNE JEGLICHE AUSDRÜCKLICHE
+ODER STILLSCHWEIGENDE GEWÄHRLEISTUNG. DER RECHTEINHABER HAFTET NICHT FÜR
+SCHÄDEN JEGLICHER ART, DIE DURCH DIE NUTZUNG ODER NICHT-NUTZUNG DIESER
+SOFTWARE ENTSTEHEN.
+
+================================================================================
+KONTAKT FÜR LIZENZANFRAGEN
+================================================================================
+
+Olaf Stolle
+Buschstrasse 10a, 58091 Hagen
+info@aicrafters.io
+
+================================================================================
+SCHLUSSBESTIMMUNGEN
+================================================================================
+
+1. Diese Lizenzvereinbarung stellt die vollständige Vereinbarung zwischen
+   den Parteien dar und ersetzt alle vorherigen mündlichen oder schriftlichen
+   Vereinbarungen.
+
+2. Änderungen dieser Lizenz bedürfen der Schriftform.
+
+3. Sollten einzelne Bestimmungen unwirksam sein, bleibt die Wirksamkeit der
+   übrigen Bestimmungen unberührt.
+
+4. Die deutsche Fassung dieser Lizenz ist maßgeblich.
+
+================================================================================
+
+Datum: 2025-12-05
+Version: 1.0
+
+DURCH NUTZUNG DIESER SOFTWARE AKZEPTIEREN SIE DIESE LIZENZBESTIMMUNGEN.

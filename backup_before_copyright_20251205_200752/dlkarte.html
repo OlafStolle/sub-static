@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neue Karte mit DL-Sub-Layern</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+<script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsts/1.4.0/jsts.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" />
+    <!--/*!
+    * Copyright © Olaf.Stolle
+    * Alle Rechte vorbehalten. Dieses Script ist geistiges Eigentum von Olaf.Stolle. Jegliche unbefugte Nutzung, Vervielfältigung oder Verbreitung
+    * dieses Scripts ist verboten und wird gemäß § 97 UrhG verfolgt. Zuwiderhandlungen werden mit einer Vertragsstrafe von 5000 Euro geahndet.
+    * Dies umfasst insbesondere die Nutzung auf anderen Webseiten oder in anderen Projekten ohne ausdrückliche schriftliche Genehmigung.
+    *
+    * BGB § 823: Schadensersatzpflicht: Wer vorsätzlich oder fahrlässig das Leben, den Körper, die Gesundheit, die Freiheit, das Eigentum
+    * oder ein sonstiges Recht eines anderen widerrechtlich verletzt, ist dem anderen zum Ersatz des daraus entstehenden Schadens verpflichtet.
+    *
+    * BGB § 97: Anspruch auf Unterlassung und Schadensersatz: Wer das Urheberrecht oder ein anderes nach diesem Gesetz geschütztes Recht
+    * widerrechtlich verletzt, kann von dem Verletzten bei Wiederholungsgefahr auf Unterlassung in Anspruch genommen werden.
+    */-->
+
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            font-size: 14px;
+        }
+
+        #map {
+            flex-grow: 1;
+        }
+
+        #sidebar {
+            width: 300px;
+            padding: 20px;
+            background-color: #00e3b7;
+            color: blue;
+            overflow-y: auto;
+        }
+
+        .container-fluid {
+            display: flex;
+            flex-grow: 1;
+            height: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control, .select2-container--default .select2-selection--multiple {
+            font-size: 14px;
+        }
+
+        .select2-container--default .select2-selection--multiple {
+            min-height: 38px;
+        }
+
+        .select2-results__option {
+            font-size: xx-small;
+        }
+
+        .select2-selection__choice {
+            background-color: blue
+        }
+        .btn {
+            font-size: 14px;
+        }
+
+        #status {
+            margin-top: 0.5rem;
+        }
+
+        #header {
+            background-color: #343a40;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .col-half {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Überprüfung der Authentifizierung
+        if (!sessionStorage.getItem('authenticated')) {
+            window.location.href = 'index.html';
+        }
+    </script>
+    <div id="header">
+        <h1>DL Karten</h1>
+    </div>
+    <div class="container-fluid">
+        <div id="sidebar">
+            <div id="status" class="alert alert-info" role="alert">
+                Status meldungen
+            </div>
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="dlFile">DL-Datei hochladen</label>
+                    <input type="file" class="form-control-file" id="dlFile" accept=".xls,.xlsx">
+                </div>
+                <button type="button" id="uploadButton" class="btn btn-primary mb-3">Datei upload</button>
+            </form>
+            <!--<button id="deleteButton" class="btn btn-danger mb-3">del DB</button>-->
+            <button id="refreshFilterButton" class="btn btn-danger mb-3">refreshFilter</button>
+            <!--<button id="startProcessButton" class="btn btn-primary">Prozess Starten</button>-->
+
+            <button id="applyFilters" class="btn btn-primary">Anzeigen</button>
+
+            <div class="form-group">
+                <label for="filterDLnrName">NR - Name</label>
+                <select class="form-control fs-6 lh-sm" id="filterDLnrName" multiple="multiple">
+                    <!-- Optionen werden dynamisch per JavaScript hinzugefügt -->
+                </select>
+            </div>
+
+
+            <div class="row">
+                <div class="col-half">
+                    <div class="form-group">
+                        <label for="filterVertragsart">Vertragsart</label>
+                        <select class="form-control fs-6 lh-sm" id="filterVertragsart" multiple="multiple"></select>
+                    </div>
+                </div>
+                <div class="col-half">
+                    <div class="form-group">
+                        <label for="filterGewerk">Gewerk</label>
+                        <select class="form-control fs-6 lh-sm" id="filterGewerk" multiple="multiple"></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-half">
+                    <div class="form-group">
+                        <label for="filterStatus">Status</label>
+                        <select class="form-control fs-6 lh-sm" id="filterStatus" multiple="multiple"></select>
+                    </div>
+                </div>
+                <div class="col-half">
+                    <div class="form-group">
+                        <label for="filterSubregion">Subregion</label>
+                        <select class="form-control fs-6 lh-sm" id="filterSubregion" multiple="multiple"></select>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-half">
+                    <div class="form-group">
+                        <label for="filterRegion">Region</label>
+                        <select class="form-control fs-6 lh-sm" id="filterRegion" multiple="multiple"></select>
+                    </div>
+                </div>
+                <div class="col-half">
+                    <div class="form-group">
+                        <label for="filterKundentyp">Kundentyp</label>
+                        <select class="form-control fs-6 lh-sm" id="filterKundentyp" multiple="multiple"></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-half">
+                    <div class="form-group">
+                        <label for="filterMarktart">Marktart</label>
+                        <select class="form-control fs-6 lh-sm" id="filterMarktart" multiple="multiple"></select>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div id="colorPickerContainer" class="color-picker-container" hidden>
+            <div class="color-picker-content">
+                <h4>Farbe ändern</h4>
+                <p id="selectedGewerk"></p>
+                <input type="color" id="colorPicker">
+                <div class="button-container">
+                    <button id="applyColor" class="btn btn-primary">Apply Color</button>
+                    <button id="cancelColor" class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="map"></div>
+
+
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier-Leaflet/0.2.6/oms.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js"></script>
+    <!-- Turf.js für räumliche Analyse -->
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+
+    <!-- Haupt JavaScript-Dateien -->
+    <script type="module" src="scripts/DatenLoader/myApp_db.js"></script>
+    <script type="module" src="scripts/DatenLoader/myApp_part1.js"></script>
+    <script type="module" src="scripts/DatenLoader/myApp_part2.js"></script>
+    <script type="module" src="scripts/DatenLoader/multiSelect.js"></script>
+    <script type="module" src="scripts/DatenLoader/fillFilters.js"></script>
+    <!-- Geodaten erzeugung -->
+    <script type="module" src="scripts/leaflet/erzGeo/main.js"></script>
+    <script type="module" src="scripts/leaflet/erzGeo/DLSub.js"></script>
+    <script type="module" src="scripts/leaflet/erzGeo/Standorte.js"></script>
+    <script type="module" src="scripts/leaflet/Layers/refreshFilter.js"></script>
+    <script type="module" src="scripts/leaflet/Layers/legende.js"></script>
+    <script type="module" src="scripts/leaflet/Layers/LayerMain.js"></script>
+    <script type="module" src="scripts/leaflet/Layers/SubregionenLayer.js"></script>
+    <script type="module" src="scripts/leaflet/Layers/DLStandorte.js"></script>
+    <script type="module" src="scripts/leaflet/Layers/DLSubregionenLayer.js"></script>
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+    <script type="module" src="scripts/leaflet/Layers/LassoSelection.js"></script>
+</body>
+</html>
