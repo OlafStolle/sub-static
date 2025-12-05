@@ -205,7 +205,20 @@
     <script type="text/javascript" src="scripts/myaApp.js"></script>
     <script type="text/javascript" src="scripts/ad-slider.js"></script>
 
+    <!-- URL-basierte Slider-Kontrolle -->
+    <script>
+        (function() {
+            var hostname = window.location.hostname;
+            var slider = document.getElementById('ad-slider');
 
+            // Slider NUR auf ai-crafters.io anzeigen, überall sonst ausblenden
+            if (hostname.indexOf('hwwh.eu') !== -1 || hostname === 'localhost') {
+                slider.style.display = 'none';
+                // Map-Höhe anpassen wenn kein Slider
+                document.getElementById('map').style.height = 'calc(100% - 70px)';
+            }
+        })();
+    </script>
 
 
 
