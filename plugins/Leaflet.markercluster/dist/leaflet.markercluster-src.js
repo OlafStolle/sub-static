@@ -46,6 +46,48 @@
  (c) 2012-2013, Dave Leaver, smartrak
 */
 (function (window, document, undefined) {/*
+ * ============================================================================
+ * AiCrafters Platform - Proprietary and Confidential
+ * ============================================================================
+ *
+ * Copyright (c) 2025 Olaf Stolle. All Rights Reserved.
+ *
+ * NOTICE: This file and its contents are proprietary and confidential.
+ *
+ * Unauthorized copying, modification, distribution, or use of this file,
+ * via any medium, is strictly prohibited without explicit written permission
+ * from the copyright holder.
+ *
+ * This software contains trade secrets and confidential information including
+ * but not limited to:
+ * - Proprietary algorithms and calculation methods
+ * - Geometric models and mathematical formulas
+ * - Database structures and data models
+ * - Business logic and workflows
+ * - AI models and training procedures
+ *
+ * PENALTIES FOR UNAUTHORIZED USE:
+ * - Unauthorized use: €50,000 + €5,000/day
+ * - Reverse engineering: €100,000
+ * - Distribution to third parties: €150,000
+ * - Use in competing products: €250,000
+ * - Commercial exploitation: €500,000 + 25% of revenue
+ *
+ * LEGAL NOTICE:
+ * Violations may result in:
+ * - Civil penalties as stated above
+ * - Criminal prosecution under § 106 UrhG (German Copyright Act)
+ * - Immediate injunction
+ * - Confiscation of derived works
+ *
+ * For licensing inquiries, contact:
+ * Olaf Stolle
+ * info@aicrafters.io
+ *
+ * ============================================================================
+ */
+
+/*
  * L.MarkerClusterGroup extends L.FeatureGroup by clustering the markers contained within
  */
 
@@ -72,6 +114,9 @@ L.MarkerClusterGroup = L.FeatureGroup.extend({
 
 		//Increase to increase the distance away that spiderfied markers appear from the center
 		spiderfyDistanceMultiplier: 1,
+
+		// Make it possible to specify a polyline options on a spider leg
+		spiderLegPolylineOptions: { weight: 1.5, color: '#222' },
 
 		// When bulk adding layers, adds markers in chunks. Means addLayers may not add all the layers in the call, others will be loaded during setTimeouts
 		chunkedLoading: false,
@@ -195,8 +240,8 @@ L.MarkerClusterGroup = L.FeatureGroup.extend({
 
 		if (this._featureGroup.hasLayer(layer)) {
 			this._featureGroup.removeLayer(layer);
-			if (layer.setOpacity) {
-				layer.setOpacity(1);
+			if (layer.clusterShow) {
+				layer.clusterShow();
 			}
 		}
 
@@ -307,6 +352,14 @@ L.MarkerClusterGroup = L.FeatureGroup.extend({
 			return this;
 		}
 
+		if (this._unspiderfy) {
+			this._unspiderfy();
+			for (i = 0, l = layersArray.length; i < l; i++) {
+				m = layersArray[i];
+				this._unspiderfyLayer(m);
+			}
+		}
+
 		for (i = 0, l = layersArray.length; i < l; i++) {
 			m = layersArray[i];
 
@@ -319,8 +372,8 @@ L.MarkerClusterGroup = L.FeatureGroup.extend({
 
 			if (fg.hasLayer(m)) {
 				fg.removeLayer(m);
-				if (m.setOpacity) {
-					m.setOpacity(1);
+				if (m.clusterShow) {
+					m.clusterShow();
 				}
 			}
 		}
@@ -702,7 +755,11 @@ L.MarkerClusterGroup = L.FeatureGroup.extend({
 
 	_zoomOrSpiderfy: function (e) {
 		var map = this._map;
-		if (map.getMaxZoom() === map.getZoom()) {
+		if (e.layer._bounds._northEast.equals(e.layer._bounds._southWest)) {
+			if (this.options.spiderfyOnMaxZoom) {
+				e.layer.spiderfy();
+			}
+		} else if (map.getMaxZoom() === map.getZoom()) {
 			if (this.options.spiderfyOnMaxZoom) {
 				e.layer.spiderfy();
 			}
@@ -1006,7 +1063,7 @@ L.MarkerClusterGroup.include(!L.DomUtil.TRANSITION ? {
 				c._recursivelyAddChildrenToMap(null, newZoomLevel, bounds);
 			} else {
 				//Fade out old cluster
-				c.setOpacity(0);
+				c.clusterHide();
 				c._recursivelyAddChildrenToMap(startPos, newZoomLevel, bounds);
 			}
 
@@ -1028,7 +1085,7 @@ L.MarkerClusterGroup.include(!L.DomUtil.TRANSITION ? {
 		//TODO Maybe? Update markers in _recursivelyBecomeVisible
 		fg.eachLayer(function (n) {
 			if (!(n instanceof L.MarkerCluster) && n._icon) {
-				n.setOpacity(1);
+				n.clusterShow();
 			}
 		});
 
@@ -1042,7 +1099,7 @@ L.MarkerClusterGroup.include(!L.DomUtil.TRANSITION ? {
 			//update the positions of the just added clusters/markers
 			this._topClusterLevel._recursively(bounds, previousZoomLevel, 0, function (c) {
 				fg.removeLayer(c);
-				c.setOpacity(1);
+				c.clusterShow();
 			});
 
 			this._animationEnd();
@@ -1078,8 +1135,8 @@ L.MarkerClusterGroup.include(!L.DomUtil.TRANSITION ? {
 				var m = cluster._markers[0];
 				//If we were in a cluster animation at the time then the opacity and position of our child could be wrong now, so fix it
 				m.setLatLng(m.getLatLng());
-				if (m.setOpacity) {
-					m.setOpacity(1);
+				if (m.clusterShow) {
+					m.clusterShow();
 				}
 			} else {
 				cluster._recursively(bounds, newZoomLevel, 0, function (c) {
@@ -1102,11 +1159,11 @@ L.MarkerClusterGroup.include(!L.DomUtil.TRANSITION ? {
 				this._animationStart();
 
 				layer._setPos(this._map.latLngToLayerPoint(newCluster.getLatLng()));
-				layer.setOpacity(0);
+				layer.clusterHide();
 
 				this._enqueue(function () {
 					fg.removeLayer(layer);
-					layer.setOpacity(1);
+					layer.clusterShow();
 
 					me._animationEnd();
 				});
@@ -1134,6 +1191,48 @@ L.markerClusterGroup = function (options) {
 	return new L.MarkerClusterGroup(options);
 };
 
+
+/*
+ * ============================================================================
+ * AiCrafters Platform - Proprietary and Confidential
+ * ============================================================================
+ *
+ * Copyright (c) 2025 Olaf Stolle. All Rights Reserved.
+ *
+ * NOTICE: This file and its contents are proprietary and confidential.
+ *
+ * Unauthorized copying, modification, distribution, or use of this file,
+ * via any medium, is strictly prohibited without explicit written permission
+ * from the copyright holder.
+ *
+ * This software contains trade secrets and confidential information including
+ * but not limited to:
+ * - Proprietary algorithms and calculation methods
+ * - Geometric models and mathematical formulas
+ * - Database structures and data models
+ * - Business logic and workflows
+ * - AI models and training procedures
+ *
+ * PENALTIES FOR UNAUTHORIZED USE:
+ * - Unauthorized use: €50,000 + €5,000/day
+ * - Reverse engineering: €100,000
+ * - Distribution to third parties: €150,000
+ * - Use in competing products: €250,000
+ * - Commercial exploitation: €500,000 + 25% of revenue
+ *
+ * LEGAL NOTICE:
+ * Violations may result in:
+ * - Civil penalties as stated above
+ * - Criminal prosecution under § 106 UrhG (German Copyright Act)
+ * - Immediate injunction
+ * - Confiscation of derived works
+ *
+ * For licensing inquiries, contact:
+ * Olaf Stolle
+ * info@aicrafters.io
+ *
+ * ============================================================================
+ */
 
 L.MarkerCluster = L.Marker.extend({
 	initialize: function (group, zoom, a, b) {
@@ -1306,7 +1405,7 @@ L.MarkerCluster = L.Marker.extend({
 					//Only do it if the icon is still on the map
 					if (m._icon) {
 						m._setPos(center);
-						m.setOpacity(0);
+						m.clusterHide();
 					}
 				}
 			},
@@ -1317,7 +1416,7 @@ L.MarkerCluster = L.Marker.extend({
 					cm = childClusters[j];
 					if (cm._icon) {
 						cm._setPos(center);
-						cm.setOpacity(0);
+						cm.clusterHide();
 					}
 				}
 			}
@@ -1332,10 +1431,10 @@ L.MarkerCluster = L.Marker.extend({
 				//TODO: depthToAnimateIn affects _isSingleParent, if there is a multizoom we may/may not be.
 				//As a hack we only do a animation free zoom on a single level zoom, if someone does multiple levels then we always animate
 				if (c._isSingleParent() && previousZoomLevel - 1 === newZoomLevel) {
-					c.setOpacity(1);
+					c.clusterShow();
 					c._recursivelyRemoveChildrenFromMap(bounds, previousZoomLevel); //Immediately remove our children as we are replacing them. TODO previousBounds not bounds
 				} else {
-					c.setOpacity(0);
+					c.clusterHide();
 				}
 
 				c._addToMap();
@@ -1345,7 +1444,7 @@ L.MarkerCluster = L.Marker.extend({
 
 	_recursivelyBecomeVisible: function (bounds, zoomLevel) {
 		this._recursively(bounds, 0, zoomLevel, null, function (c) {
-			c.setOpacity(1);
+			c.clusterShow();
 		});
 	},
 
@@ -1368,8 +1467,8 @@ L.MarkerCluster = L.Marker.extend({
 						nm._backupLatlng = nm.getLatLng();
 
 						nm.setLatLng(startPos);
-						if (nm.setOpacity) {
-							nm.setOpacity(0);
+						if (nm.clusterHide) {
+							nm.clusterHide();
 						}
 					}
 
@@ -1421,8 +1520,8 @@ L.MarkerCluster = L.Marker.extend({
 					m = c._markers[i];
 					if (!exceptBounds || !exceptBounds.contains(m._latlng)) {
 						c._group._featureGroup.removeLayer(m);
-						if (m.setOpacity) {
-							m.setOpacity(1);
+						if (m.clusterShow) {
+							m.clusterShow();
 						}
 					}
 				}
@@ -1433,8 +1532,8 @@ L.MarkerCluster = L.Marker.extend({
 					m = c._childClusters[i];
 					if (!exceptBounds || !exceptBounds.contains(m._latlng)) {
 						c._group._featureGroup.removeLayer(m);
-						if (m.setOpacity) {
-							m.setOpacity(1);
+						if (m.clusterShow) {
+							m.clusterShow();
 						}
 					}
 				}
@@ -1451,7 +1550,7 @@ L.MarkerCluster = L.Marker.extend({
 	_recursively: function (boundsToApplyTo, zoomLevelToStart, zoomLevelToStop, runAtEveryLevel, runAtBottomLevel) {
 		var childClusters = this._childClusters,
 		    zoom = this._zoom,
-			i, c;
+		    i, c;
 
 		if (zoomLevelToStart > zoom) { //Still going down to required depth, just recurse to child clusters
 			for (i = childClusters.length - 1; i >= 0; i--) {
@@ -1505,6 +1604,118 @@ L.MarkerCluster = L.Marker.extend({
 	}
 });
 
+
+/*
+ * ============================================================================
+ * AiCrafters Platform - Proprietary and Confidential
+ * ============================================================================
+ *
+ * Copyright (c) 2025 Olaf Stolle. All Rights Reserved.
+ *
+ * NOTICE: This file and its contents are proprietary and confidential.
+ *
+ * Unauthorized copying, modification, distribution, or use of this file,
+ * via any medium, is strictly prohibited without explicit written permission
+ * from the copyright holder.
+ *
+ * This software contains trade secrets and confidential information including
+ * but not limited to:
+ * - Proprietary algorithms and calculation methods
+ * - Geometric models and mathematical formulas
+ * - Database structures and data models
+ * - Business logic and workflows
+ * - AI models and training procedures
+ *
+ * PENALTIES FOR UNAUTHORIZED USE:
+ * - Unauthorized use: €50,000 + €5,000/day
+ * - Reverse engineering: €100,000
+ * - Distribution to third parties: €150,000
+ * - Use in competing products: €250,000
+ * - Commercial exploitation: €500,000 + 25% of revenue
+ *
+ * LEGAL NOTICE:
+ * Violations may result in:
+ * - Civil penalties as stated above
+ * - Criminal prosecution under § 106 UrhG (German Copyright Act)
+ * - Immediate injunction
+ * - Confiscation of derived works
+ *
+ * For licensing inquiries, contact:
+ * Olaf Stolle
+ * info@aicrafters.io
+ *
+ * ============================================================================
+ */
+
+
+/*
+* Extends L.Marker to include two extra methods: clusterHide and clusterShow.
+* 
+* They work as setOpacity(0) and setOpacity(1) respectively, but
+* they will remember the marker's opacity when hiding and showing it again.
+* 
+*/
+
+
+L.Marker.include({
+	
+	clusterHide: function () {
+		this.options.opacityWhenUnclustered = this.options.opacity || 1;
+		return this.setOpacity(0);
+	},
+	
+	clusterShow: function () {
+		var ret = this.setOpacity(this.options.opacity || this.options.opacityWhenUnclustered);
+		delete this.options.opacityWhenUnclustered;
+		return ret;
+	}
+	
+});
+
+
+
+
+/*
+ * ============================================================================
+ * AiCrafters Platform - Proprietary and Confidential
+ * ============================================================================
+ *
+ * Copyright (c) 2025 Olaf Stolle. All Rights Reserved.
+ *
+ * NOTICE: This file and its contents are proprietary and confidential.
+ *
+ * Unauthorized copying, modification, distribution, or use of this file,
+ * via any medium, is strictly prohibited without explicit written permission
+ * from the copyright holder.
+ *
+ * This software contains trade secrets and confidential information including
+ * but not limited to:
+ * - Proprietary algorithms and calculation methods
+ * - Geometric models and mathematical formulas
+ * - Database structures and data models
+ * - Business logic and workflows
+ * - AI models and training procedures
+ *
+ * PENALTIES FOR UNAUTHORIZED USE:
+ * - Unauthorized use: €50,000 + €5,000/day
+ * - Reverse engineering: €100,000
+ * - Distribution to third parties: €150,000
+ * - Use in competing products: €250,000
+ * - Commercial exploitation: €500,000 + 25% of revenue
+ *
+ * LEGAL NOTICE:
+ * Violations may result in:
+ * - Civil penalties as stated above
+ * - Criminal prosecution under § 106 UrhG (German Copyright Act)
+ * - Immediate injunction
+ * - Confiscation of derived works
+ *
+ * For licensing inquiries, contact:
+ * Olaf Stolle
+ * info@aicrafters.io
+ *
+ * ============================================================================
+ */
 
 
 L.DistanceGrid = function (cellSize) {
@@ -1624,6 +1835,48 @@ L.DistanceGrid.prototype = {
 };
 
 
+/*
+ * ============================================================================
+ * AiCrafters Platform - Proprietary and Confidential
+ * ============================================================================
+ *
+ * Copyright (c) 2025 Olaf Stolle. All Rights Reserved.
+ *
+ * NOTICE: This file and its contents are proprietary and confidential.
+ *
+ * Unauthorized copying, modification, distribution, or use of this file,
+ * via any medium, is strictly prohibited without explicit written permission
+ * from the copyright holder.
+ *
+ * This software contains trade secrets and confidential information including
+ * but not limited to:
+ * - Proprietary algorithms and calculation methods
+ * - Geometric models and mathematical formulas
+ * - Database structures and data models
+ * - Business logic and workflows
+ * - AI models and training procedures
+ *
+ * PENALTIES FOR UNAUTHORIZED USE:
+ * - Unauthorized use: €50,000 + €5,000/day
+ * - Reverse engineering: €100,000
+ * - Distribution to third parties: €150,000
+ * - Use in competing products: €250,000
+ * - Commercial exploitation: €500,000 + 25% of revenue
+ *
+ * LEGAL NOTICE:
+ * Violations may result in:
+ * - Civil penalties as stated above
+ * - Criminal prosecution under § 106 UrhG (German Copyright Act)
+ * - Immediate injunction
+ * - Confiscation of derived works
+ *
+ * For licensing inquiries, contact:
+ * Olaf Stolle
+ * info@aicrafters.io
+ *
+ * ============================================================================
+ */
+
 /* Copyright (c) 2012 the authors listed at the following URL, and/or
 the authors of referenced articles or incorporated external code:
 https://en.literateprograms.org/Quickhull_(Javascript)?action=history&offset=20120410175256
@@ -1734,20 +1987,40 @@ Retrieved from: https://en.literateprograms.org/Quickhull_(Javascript)?oldid=184
 		getConvexHull: function (latLngs) {
 			// find first baseline
 			var maxLat = false, minLat = false,
+				maxLng = false, minLng = false,
+				maxLatPt = null, minLatPt = null,
+				maxLngPt = null, minLngPt = null,
 				maxPt = null, minPt = null,
 				i;
 
 			for (i = latLngs.length - 1; i >= 0; i--) {
 				var pt = latLngs[i];
 				if (maxLat === false || pt.lat > maxLat) {
-					maxPt = pt;
+					maxLatPt = pt;
 					maxLat = pt.lat;
 				}
 				if (minLat === false || pt.lat < minLat) {
-					minPt = pt;
+					minLatPt = pt;
 					minLat = pt.lat;
 				}
+				if (maxLng === false || pt.lng > maxLng) {
+					maxLngPt = pt;
+					maxLng = pt.lng;
+				}
+				if (minLng === false || pt.lng < minLng) {
+					minLngPt = pt;
+					minLng = pt.lng;
+				}
 			}
+			
+			if (minLat !== maxLat) {
+				minPt = minLatPt;
+				maxPt = maxLatPt;
+			} else {
+				minPt = minLngPt;
+				maxPt = maxLngPt;
+			}
+
 			var ch = [].concat(this.buildConvexHull([minPt, maxPt], latLngs),
 								this.buildConvexHull([maxPt, minPt], latLngs));
 			return ch;
@@ -1770,6 +2043,48 @@ L.MarkerCluster.include({
 	}
 });
 
+
+/*
+ * ============================================================================
+ * AiCrafters Platform - Proprietary and Confidential
+ * ============================================================================
+ *
+ * Copyright (c) 2025 Olaf Stolle. All Rights Reserved.
+ *
+ * NOTICE: This file and its contents are proprietary and confidential.
+ *
+ * Unauthorized copying, modification, distribution, or use of this file,
+ * via any medium, is strictly prohibited without explicit written permission
+ * from the copyright holder.
+ *
+ * This software contains trade secrets and confidential information including
+ * but not limited to:
+ * - Proprietary algorithms and calculation methods
+ * - Geometric models and mathematical formulas
+ * - Database structures and data models
+ * - Business logic and workflows
+ * - AI models and training procedures
+ *
+ * PENALTIES FOR UNAUTHORIZED USE:
+ * - Unauthorized use: €50,000 + €5,000/day
+ * - Reverse engineering: €100,000
+ * - Distribution to third parties: €150,000
+ * - Use in competing products: €250,000
+ * - Commercial exploitation: €500,000 + 25% of revenue
+ *
+ * LEGAL NOTICE:
+ * Violations may result in:
+ * - Civil penalties as stated above
+ * - Criminal prosecution under § 106 UrhG (German Copyright Act)
+ * - Immediate injunction
+ * - Confiscation of derived works
+ *
+ * For licensing inquiries, contact:
+ * Olaf Stolle
+ * info@aicrafters.io
+ *
+ * ============================================================================
+ */
 
 //This code is 100% based on https://github.com/jawj/OverlappingMarkerSpiderfier-Leaflet
 //Huge thanks to jawj for implementing it first to make my job easy :-)
@@ -1909,8 +2224,8 @@ L.MarkerCluster.include(!L.DomUtil.TRANSITION ? {
 
 			fg.addLayer(m);
 
-
-			leg = new L.Polyline([this._latlng, newPos], { weight: 1.5, color: '#222' });
+			var legOptions = this._group.options.spiderLegPolylineOptions;
+			leg = new L.Polyline([this._latlng, newPos], legOptions);
 			map.addLayer(leg);
 			m._spiderLeg = leg;
 		}
@@ -1942,7 +2257,7 @@ L.MarkerCluster.include(!L.DomUtil.TRANSITION ? {
 			//If it is a marker, add it now and we'll animate it out
 			if (m.setOpacity) {
 				m.setZIndexOffset(1000000); //Make these appear on top of EVERYTHING
-				m.setOpacity(0);
+				m.clusterHide();
 			
 				fg.addLayer(m);
 
@@ -1969,12 +2284,16 @@ L.MarkerCluster.include(!L.DomUtil.TRANSITION ? {
 			m.setLatLng(newPos);
 			
 			if (m.setOpacity) {
-				m.setOpacity(1);
+				m.clusterShow();
 			}
 
 
 			//Add Legs.
-			leg = new L.Polyline([me._latlng, newPos], { weight: 1.5, color: '#222', opacity: initialLegOpacity });
+			var legOptions = this._group.options.spiderLegPolylineOptions;
+			if (legOptions.opacity === undefined) {
+				legOptions.opacity = initialLegOpacity;
+			}
+			leg = new L.Polyline([me._latlng, newPos], legOptions);
 			map.addLayer(leg);
 			m._spiderLeg = leg;
 
@@ -2060,7 +2379,7 @@ L.MarkerCluster.include(!L.DomUtil.TRANSITION ? {
 			//Hack override the location to be our center
 			if (m.setOpacity) {
 				m._setPos(thisLayerPos);
-				m.setOpacity(0);
+				m.clusterHide();
 			} else {
 				fg.removeLayer(m);
 			}
@@ -2102,7 +2421,7 @@ L.MarkerCluster.include(!L.DomUtil.TRANSITION ? {
 
 
 				if (m.setOpacity) {
-					m.setOpacity(1);
+					m.clusterShow();
 					m.setZIndexOffset(0);
 				}
 
